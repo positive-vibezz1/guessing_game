@@ -1,5 +1,5 @@
 import random
-import math
+# import math
 import tkinter
 from tkinter import font
 
@@ -38,7 +38,7 @@ secret_number = random.randint(1, PROCESS_NUMBER) # Generate a secret number
 def on_button_click():
     global secret_number
     n_o_c_g = 0 # Counts how many correct guesses you made
-    # n_o_i_g = 0 # Counts how many incorrect guesses you made
+    # n_o_i_g = 0 # Counts how many incorrect guesses you made, to be decided wether to add to game to count incorrect guesses
     to_low = 'your guess is to low'
     to_high = 'your guess is to high'
     just_right = 'Congratulations! You guessed it right!'
@@ -71,7 +71,7 @@ def on_button_click():
         print(f"number range is 1 - {PROCESS_NUMBER}")
 
     # elif :
-    
+
     else:
         #color = color * colour_hint
         answer_label.config(text=just_right, bg='#00FF00')
