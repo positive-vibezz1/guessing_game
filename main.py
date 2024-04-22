@@ -12,8 +12,8 @@ root.geometry("800x600")
 TITLE = font.Font(size=30)
 PROMPT = font.Font(size=20)
 BUTTON = font.Font(size=13)
+PROCESS_NUMBER = 100
 
-secret_number = random.randint(1, 100) # Generate a secret number
 
 answer_label = tkinter.Label(root, font=TITLE)
 answer_label.place(x=100, y=400)
@@ -24,6 +24,16 @@ new_number_gen.place(x=100, y=400)
  '''
 
 
+# Lets the user specify the range of numbers to guess
+def set_number_range():
+    global secret_number, PROCESS_NUMBER
+    PROCESS_NUMBER = int(e_n_r.get())
+    secret_number = random.randint(1, PROCESS_NUMBER)
+    print(f"new number range is 1 - {PROCESS_NUMBER}")
+
+
+secret_number = random.randint(1, PROCESS_NUMBER) # Generate a secret number
+
 # This gets triggered on button click which will then check the user input and compare to our secret number
 def on_button_click():
     global secret_number
@@ -33,6 +43,7 @@ def on_button_click():
     to_high = 'your guess is to high'
     just_right = 'Congratulations! You guessed it right!'
     guess = None
+
     # Process user input
     guess = int(entry.get())
 
@@ -49,13 +60,22 @@ def on_button_click():
     # And if it is neither then it checks if it is the same if so, it congragulates the user.
     if guess < secret_number:
         answer_label.config(text=to_low)
+        print(f"number of correct guesses! {n_o_c_g}")
+        print(f"the secret number is! {secret_number}")
+        print(f"number range is 1 - {PROCESS_NUMBER}")
 
     elif guess >secret_number:
         answer_label.config(text=to_high)
+        print(f"number of correct guesses! {n_o_c_g}")
+        print(f"the secret number is! {secret_number}")
+        print(f"number range is 1 - {PROCESS_NUMBER}")
+
     # elif :
+    
     else:
+        #color = color * colour_hint
         answer_label.config(text=just_right, bg='#00FF00')
-        secret_number = random.randint(1, 100)
+        secret_number = random.randint(1, PROCESS_NUMBER)
         n_o_c_g += 1
 
         # Number of correct guesses
@@ -65,6 +85,7 @@ def on_button_click():
         #debug lines
         print(f"new secret number is! {secret_number}")
         print(f"number of correct guesses! {n_o_c_g}")
+        print(f"number range is 1 - {PROCESS_NUMBER}")
 
 
 # Get user input
@@ -78,6 +99,15 @@ what_is_your_number.place(x=10, y=150)
 # Pushes the user text so we can process it
 button = tkinter.Button(root, text="check number!", command=on_button_click, font=BUTTON)
 button.place(x=250, y=155)
+
+# Specifies the number range
+e_n_r = tkinter.Entry(root, width=10, font=PROMPT) #e_n_r = enter number range
+e_n_r.place(x=550,y=50)
+
+number_range = tkinter.Button(root, text="Confirm!", command=set_number_range, font=BUTTON)
+number_range.place(x=700, y=50)
+
+
 
 print(secret_number)
 root.mainloop()
