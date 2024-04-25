@@ -14,6 +14,9 @@ PROMPT = font.Font(size=20)
 BUTTON = font.Font(size=13)
 PROCESS_NUMBER = 100
 
+n_o_c_g = 0 # Counts how many correct guesses you made
+n_o_i_g = 0 # Counts how many incorrect guesses you made, to be decided wether to add to game to count incorrect guesses
+
 
 answer_label = tkinter.Label(root, font=TITLE)
 answer_label.place(x=100, y=400)
@@ -36,9 +39,7 @@ secret_number = random.randint(1, PROCESS_NUMBER) # Generate a secret number
 
 # This gets triggered on button click which will then check the user input and compare to our secret number
 def on_button_click():
-    global secret_number
-    n_o_c_g = 0 # Counts how many correct guesses you made
-    # n_o_i_g = 0 # Counts how many incorrect guesses you made, to be decided wether to add to game to count incorrect guesses
+    global secret_number, n_o_i_g, n_o_c_g   
     to_low = 'your guess is to low'
     to_high = 'your guess is to high'
     just_right = 'Congratulations! You guessed it right!'
@@ -60,12 +61,16 @@ def on_button_click():
     # And if it is neither then it checks if it is the same if so, it congragulates the user.
     if guess < secret_number:
         answer_label.config(text=to_low)
+        n_o_i_g += 1
+        print(f"{n_o_i_g} incoorect guesses")
         print(f"number of correct guesses! {n_o_c_g}")
         print(f"the secret number is! {secret_number}")
         print(f"number range is 1 - {PROCESS_NUMBER}")
 
     elif guess >secret_number:
         answer_label.config(text=to_high)
+        n_o_i_g += 1
+        print(f"{n_o_i_g} incoorect guesses")  
         print(f"number of correct guesses! {n_o_c_g}")
         print(f"the secret number is! {secret_number}")
         print(f"number range is 1 - {PROCESS_NUMBER}")
@@ -74,18 +79,21 @@ def on_button_click():
 
     else:
         #color = color * colour_hint
-        answer_label.config(text=just_right, bg='#00FF00')
+        answer_label.config(text=just_right)
         secret_number = random.randint(1, PROCESS_NUMBER)
         n_o_c_g += 1
 
-        # Number of correct guesses
-        correct_guesses = tkinter.Label(root, text=f"you guessed {n_o_c_g} correct", font=PROMPT)
-        correct_guesses.place(x=10,y=50)
-
         #debug lines
+        print(f"{n_o_i_g} incoorect guesses") 
         print(f"new secret number is! {secret_number}")
         print(f"number of correct guesses! {n_o_c_g}")
         print(f"number range is 1 - {PROCESS_NUMBER}")
+
+    # Number of correct guesses and incorrect guesses
+    correct_guesses = tkinter.Label(root, text=f"you guessed {n_o_c_g} correct", font=PROMPT)
+    correct_guesses.place(x=10,y=50)
+    incorrect_guesses = tkinter.Label(root, text=f"you guessed {n_o_i_g} incorrect", font=PROMPT)
+    incorrect_guesses.place(x=10,y=90)
 
 
 # Get user input
