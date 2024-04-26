@@ -13,10 +13,12 @@ TITLE = font.Font(size=30)
 PROMPT = font.Font(size=20)
 BUTTON = font.Font(size=13)
 PROCESS_NUMBER = 100
+CLICK_UPGRADE_UPGRADE = 5
+upgrade_custom_amount_button_unlocked = False
 
 n_o_c_g = 0 # Counts how many correct guesses you made - n o c g - number of correct guess
 n_o_i_g = 0 # Counts how many incorrect guesses you made, to be decided wether to add to game to count incorrect guesses - n o i g - number of incorrect guesses
-
+clicker_upgrade = 1
 
 answer_label = tkinter.Label(root, font=TITLE)
 answer_label.place(x=100, y=400)
@@ -80,7 +82,7 @@ def on_button_click():
         #color = color * colour_hint
         answer_label.config(text=just_right)
         secret_number = random.randint(1, PROCESS_NUMBER)
-        n_o_c_g += 1
+        n_o_c_g += clicker_upgrade
 
         #debug lines
         print(f"{n_o_i_g} incoorect guesses") 
@@ -94,6 +96,27 @@ def on_button_click():
     incorrect_guesses = tkinter.Label(root, text=f"you guessed {n_o_i_g} incorrect", font=PROMPT)
     incorrect_guesses.place(x=10,y=90)
 
+def upgrade():
+    global clicker_upgrade, e_n_r, number_range, CLICK_UPGRADE_UPGRADE
+    if n_o_i_g > CLICK_UPGRADE_UPGRADE:
+        clicker_upgrade += 1
+        CLICK_UPGRADE_UPGRADE * 4
+    else:
+        print("not enough correct guesses")
+
+
+def custom_amount():
+    global e_n_r, number_range, CLICK_UPGRADE_UPGRADE
+    if n_o_i_g > 1:
+        # Specifies the number range
+        e_n_r = tkinter.Entry(root, width=10, font=PROMPT) #e_n_r = enter number range
+        e_n_r.place(x=550,y=50)
+
+        number_range = tkinter.Button(root, text="Confirm!", command=set_number_range, font=BUTTON)
+        number_range.place(x=700, y=50)
+        upgrade_custom_amount_button_unlocked == True
+    else:
+        print("not enough correct guesses")
 
 # Get user input
 entry = tkinter.Entry(root, width=20,font=PROMPT)
@@ -107,14 +130,23 @@ what_is_your_number.place(x=10, y=150)
 button = tkinter.Button(root, text="check number!", command=on_button_click, font=BUTTON)
 button.place(x=250, y=155)
 
-# Specifies the number range
-e_n_r = tkinter.Entry(root, width=10, font=PROMPT) #e_n_r = enter number range
-e_n_r.place(x=550,y=50)
-
-number_range = tkinter.Button(root, text="Confirm!", command=set_number_range, font=BUTTON)
-number_range.place(x=700, y=50)
 
 
+# Upgrade buttons
+upgrade_click = tkinter.Label(root, text='upgrade guess amount!', font=PROMPT)
+upgrade_click.place(x=395, y=500)
+upgrade_range = tkinter.Button(root, text="upgrade!", command=upgrade, font=BUTTON)
+upgrade_range.place(x=700, y=500)
+if upgrade_custom_amount_button_unlocked != False:
+    upgrade_custom_amount = tkinter.Label(root, text='unlock custom amount!', font=PROMPT)
+    upgrade_custom_amount.place(x=395, y=550)
+    upgrade_custom_amount_button = tkinter.Button(root, text="unlocked!", command=custom_amount, font=BUTTON)
+    upgrade_custom_amount_button.place(x=700, y=550)
+else:
+    upgrade_custom_amount = tkinter.Label(root, text='unlock custom amount!', font=PROMPT)
+    upgrade_custom_amount.place(x=395, y=550)
+    upgrade_custom_amount_button = tkinter.Button(root, text="unlock!", command=custom_amount, font=BUTTON)
+    upgrade_custom_amount_button.place(x=700, y=550)
 
 print(secret_number)
 root.mainloop()
